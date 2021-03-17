@@ -37,7 +37,7 @@ public class FXMLController {
     void doReset(ActionEvent event) {
     	txtTesto.clear();
     	txtResult.clear();
-    	dizionario.resetDizionario();
+    	dizionario.resetDictionary();
     }
 
     @FXML
@@ -67,11 +67,24 @@ public class FXMLController {
     		txtResult.setText("la parola: " + parolaAliena + " con traduzione " + traduzione + " inserita nel dizionario.");
     	}
     	else {
-    		if(!parolaAliena.matches("[a-zA-Z]*")) {
+    		if(!parolaAliena.matches("[a-zA-Z?]*")) {
     			txtResult.setText("Inserire solo caratteri alfabetici");
     			return;
     		}
-    		String traduzione = dizionario.traduzioneParola(parolaAliena);
+    		String traduzione = dizionario.translateWord(parolaAliena);
+    		
+    		if (parolaAliena.matches("[a-zA-Z?]*") && !parolaAliena.matches("[a-zA-Z]*")) {
+
+				// Traduzione con WildCard
+				traduzione = dizionario.translateWordWildCard(parolaAliena);
+
+			} else {
+
+				// Traduzione classica
+				traduzione = dizionario.translateWord(parolaAliena);
+			}
+    		
+    		
     		if (traduzione != null) {
     			txtResult.setText(traduzione);
     		}
